@@ -37,7 +37,7 @@ def index():
         if command:
             output = subprocess.getoutput(command)  # 사용자 입력을 쉘에서 실행
     return render_template_string('''
-        <h2>Remote Command Execution!!!</h2>
+        <h2>Remote Command Execution!!!!!</h2>
         <form method="post">
             <input type="text" name="command" placeholder="Enter command">
             <input type="submit" value="Execute">
