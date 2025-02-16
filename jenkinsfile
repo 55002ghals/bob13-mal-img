@@ -1,0 +1,54 @@
+#jenkinsfile
+pipeline {
+    agent any
+
+    environment {
+        // Harbor registry IP (for HTTP mode, use http://)
+        //no protocol here, but, protocol needed when registry URL designate
+        REGISTRY = "43.201.202.153"
+        // Harbor project name (e.g., myproject)
+        PROJECT = "bob13-project1"
+        // Application (image) name
+        APP_NAME = "test1"
+        // Image tag (using BUILD_ID)
+        IMAGE_TAG = "${env.BUILD_ID}"
+        // Jenkins Harbor credentials ID
+        CREDENTIALS_ID = "admin"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout source code
+                checkout scm
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image using the Dockerfile in the current directory
+                    dockerImage = docker.build("${REGISTRY}/${PROJECT}/${APP_NAME}:${IMAGE_TAG}")
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Push the image to Harbor
+                    docker.withRegistry("http://" + REGISTRY, CREDENTIALS_ID) {
+                        dockerImage.push()  // Push the image tagged with BUILD_ID
+                        dockerImage.push("latest")  // Also push the "latest" tag (optional)
+                    }
+                }
+            }
+        }
+        stage('Clean Up') {
+            steps {
+                script {
+                    // Remove the local image to free up space (optional)
+                    sh "docker rmi ${REGISTRY}/${PROJECT}/${APP_NAME}:${IMAGE_TAG} || true"
+                }
+            }
+        }
+    }
+}
