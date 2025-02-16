@@ -4,11 +4,11 @@ pipeline {
     environment {
         // Harbor registry IP (for HTTP mode, use http://)
         //no protocol here, but, protocol needed when registry URL designate
-        REGISTRY = "43.201.202.153"
+        REGISTRY = "43.201.158.81"
         // Harbor project name (e.g., myproject)
         PROJECT = "bob13-project1"
         // Application (image) name
-        APP_NAME = "mal"
+        APP_NAME = "login"
         // Image tag (using BUILD_ID)
         IMAGE_TAG = "${env.BUILD_ID}"
         // Jenkins Harbor credentials ID
